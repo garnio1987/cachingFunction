@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    /* Cache */
+
+    const hardFunction = function (value) {
+      //some long and complicated process
+      return value * 2;
+    };
+
+    const cacheDecorator = func => {
+      let cache = [];
+      return function (x) {
+        const valueInCache = cache.find(item => item.arg === x);
+        if (valueInCache) {
+          console.log("Value from cache");
+          return valueInCache.result;
+        } else {
+          let result = func.call(null, x);
+          const res = {
+            arg: x,
+            result
+          };
+          cache.push(res);
+          console.log(cache);
+          console.log("New value");
+          return result;
+        }
+      };
+    };
+
+    const hardFunctionWithCache = cacheDecorator(hardFunction);
+    const newHardFunctionWithCache = cacheDecorator(hardFunction);
+    console.log(hardFunctionWithCache(10));
+    console.log(hardFunctionWithCache(10));
+    console.log(newHardFunctionWithCache(12));
+
+  </script>
+</body>
+
+</html>
